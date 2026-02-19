@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Restock Recommendations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="app-wrapper">
+
+    <header class="header">
+        <div class="header-inner">
+            <h1>Restock Recommendations</h1>
+        </div>
+    </header>
+
+    <div class="main-content" style="flex-direction:column; max-width:1400px;">
+
+        <div class="card">
+            {% if recommendations and recommendations|length > 0 %}
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Current Stock</th>
+                            <th>Minimum Threshold</th>
+                            <th>Suggested Restock</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in recommendations %}
+                        <tr>
+                            <td>{{ r.item }}</td>
+                            <td>{{ r.current }}</td>
+                            <td>{{ r.minimum }}</td>
+                            <td class="suggest-amount" style="color:#c2410c; font-weight:700;">+ {{ r.suggested }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div style="text-align:center; padding:5rem 1rem; color:#64748b;">
+                <p style="font-size:1.2rem; margin-bottom:0.6rem;">Everything looks good!</p>
+                <p>All items are currently above minimum thresholds.</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="card" style="margin-top:2rem;">
+            <div class="agent-box">
+                <strong>Restock Logic</strong><br>
+                Items below minimum threshold → suggested restock = <strong>2 × minimum threshold</strong><br>
+                This creates a safety buffer and reduces emergency ordering frequency.
+            </div>
+        </div>
+
+        <div style="margin-top:2.5rem; text-align:center;">
+            <a href="/" class="btn btn-primary" style="padding:0.9rem 2.2rem; font-size:1.05rem;">
+                ← Back to Dashboard
+            </a>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
